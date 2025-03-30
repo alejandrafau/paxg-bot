@@ -62,9 +62,9 @@ def midnight_processing(tim):
         logger.info("hoja de balances encontrada")
         try:
             send_email_report(
-                sender_email='maria.alejandra.fauquie@gmail.com',
+                sender_email='user@gmail.com',
                 sender_password=os.getenv('GMAIL_PASSWORD'),
-                recipient_email='maria.alejandra.fauquie@gmail.com',
+                recipient_email='user@gmail.com',
                 subject='Informe paxg-bot',
                 body='Informe de movimientos y de sistema',
                 attachment_paths=['balance_sheet.csv', 'app.log']

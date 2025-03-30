@@ -68,9 +68,9 @@ class TestCsv(unittest.TestCase):
 
     def test_send_mail(self):
         send_email_report(
-            sender_email='maria.alejandra.fauquie@gmail.com',
+            sender_email='user@email.com',
             sender_password=os.getenv('GMAIL_PASSWORD'),
-            recipient_email='maria.alejandra.fauquie@gmail.com',
+            recipient_email='user@email.com',
             subject='Corridas bot',
             body='Please find the attached report.',
             attachment_paths=['test_balance_sheet.csv']
