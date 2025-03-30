@@ -42,8 +42,9 @@ def send_email_report(sender_email, sender_password, recipient_email, subject, b
         attachment_paths = []
 
     for path in attachment_paths:
-
+        print(f"archivo a buscar: {path}")
         if os.path.exists(path):
+            print("archivo encontrado")
             with open(path, 'rb') as file:
                 file_data = file.read()
                 file_name = os.path.basename(path)
@@ -64,9 +65,9 @@ def midnight_processing(tim):
                 sender_email='maria.alejandra.fauquie@gmail.com',
                 sender_password=os.getenv('GMAIL_PASSWORD'),
                 recipient_email='maria.alejandra.fauquie@gmail.com',
-                subject='Corridas de bot',
-                body='Please find the attached report.',
-                attachment_paths=['./balance_sheet.csv', './app.log']
+                subject='Informe paxg-bot',
+                body='Informe de movimientos y de sistema',
+                attachment_paths=['balance_sheet.csv', 'app.log']
             )
             logger.info("Mail enviado con hoja de balances y hoja de errores")
         except Exception as e:

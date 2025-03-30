@@ -71,7 +71,8 @@ class TestCsv(unittest.TestCase):
             sender_email='maria.alejandra.fauquie@gmail.com',
             sender_password=os.getenv('GMAIL_PASSWORD'),
             recipient_email='maria.alejandra.fauquie@gmail.com',
-            subject='Corridas de bot',
+            subject='Corridas bot',
             body='Please find the attached report.',
+            attachment_paths=['test_balance_sheet.csv']
         )
 
