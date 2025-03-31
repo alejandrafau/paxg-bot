@@ -1,6 +1,6 @@
 import pandas as pd
 from datetime import timedelta
-from gold.predictions import fetch_predictions
+from predictions import fetch_predictions
 import logging
 ERROR = 12.72
 logger = logging.getLogger(__name__)

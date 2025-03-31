@@ -2,10 +2,10 @@ from datetime import datetime
 import pandas as pd
 import ccxt
 import os
-from gold.df_generation import create_daily_matrix
+from df_generation import create_daily_matrix
 import smtplib
 from email.message import EmailMessage
-from gold.trade import Trade
+from trade import Trade
 import logging
 
 
@@ -94,10 +94,10 @@ def regular_processing(tim):
         try:
             trade.roadmap = matrix
             if matrix["pred_compra"].iloc[-1] < trade.compra:
-                return  # Corrected: Stop execution instead of using 'break'
+                return
             trade.run(tim)
         except Exception as e:
-            logger.error(f"No se pudo correr trade: {e}", exc_info=True)  # Corrected error logging
+            logger.error(f"No se pudo correr trade: {e}", exc_info=True)
     else:
         logger.info("No hay matriz de predicciones")
 
