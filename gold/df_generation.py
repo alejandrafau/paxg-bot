@@ -44,7 +44,7 @@ def create_daily_matrix(now, df):
             "venta_down": venta_down,
         })
 
-        df.to_csv("daily.matrix.csv", float_format="%.2f", index=False)
+        df.to_csv("daily_matrix.csv", float_format="%.2f", index=False)
         logger.info("matriz construida")
 
     except Exception as e:
