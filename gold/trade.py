@@ -39,7 +39,7 @@ class Trade:
         """ Main method to execute trading logic """
         # Get hourly data once
         try:
-            hourly_data = self.roadmap.query('hours==@self.currently')
+            hourly_data = self.roadmap.query('hour==@self.currently')
             p_compra = hourly_data["compra_down"].values[0]
             p_venta = hourly_data["venta_up"].values[0]
             transaccion = "None"
