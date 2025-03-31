@@ -113,7 +113,7 @@ class Trade:
 
         # Add the new row and save
         registry.loc[len(registry)] = row
-        registry.to_csv("balance_sheet.csv")
+        registry.to_csv("balance_sheet.csv", float_format="%.2f", index=False)
 
     def _get_assets(self):
         """ Calculate total assets in USDT """
