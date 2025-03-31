@@ -81,7 +81,7 @@ def midnight_processing(tim):
         logger.info("creando registro de precios")
         prices = pd.DataFrame(columns=["fecha", "compra", "venta"])
     prices.loc[len(prices)] = row
-    prices.to_csv("prices.csv", index=False)
+    prices.to_csv("prices.csv",float_format="%.2f", index=False)
     logger.info("registro de precios actualizado y guardado")
     if len(prices) >= 5:
         create_daily_matrix(tim, prices[-5:])
@@ -93,7 +93,9 @@ def regular_processing(tim):
         matrix = pd.read_csv("daily_matrix.csv")
         try:
             trade.roadmap = matrix
-            if matrix["pred_compra"].iloc[-1] < trade.compra:
+            prices = pd.read_csv("prices.csv")
+            start_price = prices["compra"].iloc[len(prices)-1]
+            if matrix["pred_compra"].iloc[-1] < start_price:
                 return
             trade.run(tim)
         except Exception as e:
