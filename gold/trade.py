@@ -52,9 +52,11 @@ class Trade:
                 # else:
                     # self._buy()
                 transaccion = "compra"
+                logger.info("Hubo señal para comprar")
             elif self._sell_signal(p_venta):
                 # self._sell()
                 transaccion = "venta"
+                logger.info("Hubo señal para vender")
             # elif self._stop_loss_signal():
                 # self._sell()
                 # transaccion = "stop_loss"
@@ -67,12 +69,14 @@ class Trade:
             logger.error("No se pudo correr trade", e, exc_info=True)
 
     def get_compra(self):
-        """ Obtiene el precio actual al que se compra """
+        """Obtiene el precio actual de compra (ask).
+        Es decir, lo que debo pagar si quiero comprar."""
         ticker = self.wallet.fetch_ticker(self.symbol)
         return ticker["ask"]
 
     def get_venta(self):
-        """ Obtiene el precio actual al que se vende """
+        """Obtiene el precio actual de venta (bid).
+        Es decir, lo que recibiría si vendo."""
         ticker = self.wallet.fetch_ticker(self.symbol)
         return ticker["bid"]
 
@@ -84,7 +88,6 @@ class Trade:
         self._sell_order(self.paxg_balance)
 
     def _buy_signal(self, p_compra):
-        """ Check if buying conditions are met """
         return (self.usdt_balance > 0) and \
                (self.compra < p_compra)
 
@@ -93,7 +96,7 @@ class Trade:
         """ Check if selling conditions are met """
         return (self.paxg_balance > 0) and (self.venta > p_venta) and (self.venta > target)
 
-    def _record_transaction(self, now, transaccion, p_compra,p_venta):
+    def _record_transaction(self, now, transaccion, p_compra, p_venta):
         """ Record transaction to CSV """
         if transaccion == "compra":
             price = self.compra + (self.compra * self.commission)
@@ -104,16 +107,15 @@ class Trade:
         else:
             row = [now.date(), now.hour, transaccion, 0, 0, 0]
 
-        # Read existing registry or create a new one
-        if os.path.exists("balance_sheet.csv"):
-            registry = pd.read_csv("balance_sheet.csv", index_col=0)
-        else:
-            # registry = self.register
-            registry = self.register_sand
+        file_path = "balance_sheet.csv"
 
-        # Add the new row and save
-        registry.loc[len(registry)] = row
-        registry.to_csv("balance_sheet.csv", float_format="%.2f", index=False)
+        # If file exists, append; else, create with header
+        if os.path.exists(file_path):
+            pd.DataFrame([row], columns=["fecha", "hora", "transaccion", "precio_trans", "precio", "precioref"]) \
+                .to_csv(file_path, mode='a', header=False, index=False, float_format="%.8f")
+        else:
+            pd.DataFrame([row], columns=["fecha", "hora", "transaccion", "precio_trans", "precio", "precioref"]) \
+                .to_csv(file_path, mode='w', header=True, index=False, float_format="%.8f")
 
     def _get_assets(self):
         """ Calculate total assets in USDT """
