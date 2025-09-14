@@ -30,6 +30,8 @@ wallet = ccxt.binance({
     'secret': os.getenv("BINANCE_API_KEY_PRIV"),
 })
 
+wallet.load_time_difference()
+
 
 def send_email_report(sender_email, sender_password, recipient_email, subject, body, attachment_paths=None):
     msg = EmailMessage()
@@ -93,10 +95,6 @@ def regular_processing(tim):
         matrix = pd.read_csv("daily_matrix.csv")
         try:
             trade.roadmap = matrix
-            prices = pd.read_csv("prices.csv")
-            start_price = prices["compra"].iloc[len(prices)-1]
-            if matrix["pred_compra"].iloc[-1] < start_price:
-                return
             trade.run(tim)
         except Exception as e:
             logger.error(f"No se pudo correr trade: {e}", exc_info=True)

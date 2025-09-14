@@ -24,6 +24,7 @@ class Trade:
 
         self.compra = self.get_compra()
         self.venta = self.get_venta()
+        self.actual_venta = self.venta - (self.venta * self.commission)
 
         # Descomentar para producción
         # self.total_assets = self._get_assets()
@@ -94,7 +95,7 @@ class Trade:
     def _sell_signal(self,p_venta):
         target = self.last_b_price 
         """ Check if selling conditions are met """
-        return (self.paxg_balance > 0) and (self.venta > p_venta) and (self.venta > target)
+        return (self.paxg_balance > 0) and (self.venta > p_venta) and (self.actual_venta > target)
 
     def _record_transaction(self, now, transaccion, p_compra, p_venta):
         """ Record transaction to CSV """
@@ -105,6 +106,7 @@ class Trade:
             price = self.venta - (self.venta * self.commission)
             row = [now.date(), now.hour, transaccion, price, self.venta, p_venta]
         else:
+            transaccion == "nada"
             row = [now.date(), now.hour, transaccion, 0, 0, 0]
 
         file_path = "balance_sheet.csv"
